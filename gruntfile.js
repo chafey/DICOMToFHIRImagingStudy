@@ -6,78 +6,52 @@ module.exports = function(grunt) {
         clean: {
             default: {
                 src: [
-                    'dist'
+                    '../DICOMToFHIRImagingStudyBuild'
                 ]
             }
         },
         copy: {
-            bower: {
+            bowercss: {
+                src: [
+                    'bower_components/bootstrap/dist/css/bootstrap.min.css',
+                ],
+                dest: '../DICOMToFHIRImagingStudyBuild/bower/css',
+                expand: true,
+                flatten: true
+            },
+            bowerjs: {
                 src: [
                     'bower_components/jquery/dist/jquery.min.js',
                     'bower_components/jquery/dist/jquery.min.map',
+                    'bower_components/bootstrap/dist/js/bootstrap.min.js'
                 ],
-                dest: 'example',
+                dest: '../DICOMToFHIRImagingStudyBuild/bower/js',
+                expand: true,
+                flatten: true
+            },
+            bowerfonts: {
+                src: [
+                    'bower_components/bootstrap/dist/fonts/*',
+                ],
+                dest: '../DICOMToFHIRImagingStudyBuild/bower/fonts',
+                expand: true,
+                flatten: true
+            },
+            src: {
+                src: [
+                    'src/*',
+                ],
+                dest: '../DICOMToFHIRImagingStudyBuild/',
                 expand: true,
                 flatten: true
             }
-        },
-        concat: {
-            build: {
-                src : ['src/ieVer.js','src/*.js'],
-                dest: 'build/built.js'
-            },
-            css: {
-                options: {
-                    stripBanners: true,
-                    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %> ' +
-                    '| (c) 2014 Chris Hafey | https://github.com/chafey/cornerstone */\n'
-                },
-                src: ['src/cornerstone.css'],
-                dest: 'dist/cornerstone.css',
-            },
-            dist: {
-                options: {
-                    stripBanners: true,
-                    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %> ' +
-                    '| (c) 2014 Chris Hafey | https://github.com/chafey/cornerstone */\n'
-                },
-                src : ['build/built.js'],
-                dest: 'dist/cornerstone.js'
-            }
-        },
-        uglify: {
-            dist: {
-                files: {
-                    'dist/cornerstone.min.js': ['dist/cornerstone.js']
-                }
-            },
-            options: {
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %> ' +
-                '| (c) 2014 Chris Hafey | https://github.com/chafey/cornerstone */\n'
-            }
-        },
-        qunit: {
-            all: ['test/**/*.html']
-        },
-        jshint: {
-            files: [
-                'src/*.js'
-            ]
+
+
         },
         watch: {
             scripts: {
-                files: ['src/*.js', 'test/**/*.js'],
+                files: ['src/*', 'test/**/*.js'],
                 tasks: ['buildAll']
-            }
-        },
-        cssmin: {
-            dist: {
-                files: {
-                    'dist/cornerstone.min.css': ['dist/cornerstone.css']
-                }
             }
         }
 
@@ -85,7 +59,7 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('buildAll', ['copy', 'concat', 'uglify', 'jshint', 'cssmin']);
+    grunt.registerTask('buildAll', ['copy']);
     grunt.registerTask('default', ['clean', 'buildAll']);
 };
 

@@ -2,7 +2,7 @@
   "name": "DICOMToFHIRImagingStudy",
   "version": "0.0.1",
   "description": "Utility to create a FHIR Imaging Study resource from a set of DICOM files",
-  "main": "dist/DICOMToFHIRImagingStudy.js",
+  "main": "src/main.js",
   "ignore": [
     "docs",
     "example",

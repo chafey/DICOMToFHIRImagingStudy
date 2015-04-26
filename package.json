@@ -1,5 +1,5 @@
 {
-    "name": "DICOMToFHIRImagingStudy",
+  "name": "DICOMToFHIRImagingStudy",
   "version": "0.0.1",
   "description": "Utility to create a FHIR Imaging Study resource from a set of DICOM files",
   "main": "index.js",
@@ -22,5 +22,17 @@
   "homepage": "https://github.com/chafey/DICOMToFHIRImagingStudy",
   "dependencies": {
     "dicom-parser": "^1.0.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-copy": "0.4.x",
+    "grunt-contrib-qunit": "^0.4.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-jshint": "^0.8.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.9.0",
+    "load-grunt-tasks": "^0.2.1"
   }
+
 }
