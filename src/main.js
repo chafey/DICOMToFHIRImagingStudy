@@ -57,19 +57,20 @@ function getSeriesUrl(instance) {
     return url;
 }
 
-
-
-function onSuccess(data, status, jqXHR) {
-    if(data === undefined || data.length === undefined || data.length <= 0) {
-        alert('DICOMweb server returned invalid response')
-        return;
-    }
-    //console.log(data);
+function createImagingStudy(data) {
     var imagingStudy = {};
     var firstInstance = data[0];
+    imagingStudy.id = getValue(firstInstance, "0020000D");
+    imagingStudy.resource = {
+        "resourceType": "ImagingStudy",
+        "text": {
+            "status": "generated",
+            "div": getValueOrDefault(firstInstance, "00081030", "TODOHumanReadableDescriptionHereTODO")
+        }
+    };
     imagingStudy.dateTime = DAToDateTime(getValue(firstInstance, "00080020"));
     imagingStudy.subject = {
-        reference : "Patient/ReplaceWithActualId!"
+        reference : "Patient/TODOReplaceWithActualIdTODO"
     };
     imagingStudy.uid = "urn:oid:" + getValue(firstInstance, "0020000D");
     imagingStudy.accessionNo = {
@@ -82,7 +83,7 @@ function onSuccess(data, status, jqXHR) {
     imagingStudy.numberOfInstances = getValueOrDefault(firstInstance, "00201208");
     imagingStudy.series = [];
     imagingStudy.clinicalInformation = getValueOrDefault(firstInstance, "00401002");
-    imagingStudy.description = getValueOrDefault(firstInstance, "00081030")
+    imagingStudy.description = getValueOrDefault(firstInstance, "00081030");
 
     var seriesMap = [];
 
@@ -131,17 +132,39 @@ function onSuccess(data, status, jqXHR) {
     if(!imagingStudy.numberOfSeries) {
         imagingStudy.numberOfSeries = imagingStudy.series.length;
     }
-
-    $('#imagingStudy').val(JSON.stringify(imagingStudy, null, 2));
-    //console.log(imagingStudy);
+    return imagingStudy;
 }
 
-function onError() {
-    alert('Request to DICOMweb server failed');
+
+
+function onSuccess(data, status, jqXHR) {
+    if(data === undefined || data.length === undefined || data.length <= 0) {
+        $('#imagingStudy').val("ERROR - DICOMweb server returned invalid response");
+        return;
+    }
+    //console.log(data);
+
+    try {
+        var imagingStudy = createImagingStudy(data);
+        $('#imagingStudy').val(JSON.stringify(imagingStudy, null, 2));
+    }
+    catch(e) {
+        $('#imagingStudy').val("ERROR - " + e);
+    }
+
+}
+
+function onError(jqXHR,error, errorThrown) {
+    if(jqXHR.status&&jqXHR.status==400){
+        $('#imagingStudy').val("ERROR - Request to DICOMweb server failed - " + jqXHR.responseText);
+    }else{
+        $('#imagingStudy').val("ERROR - Request to DICOMweb server failed");
+    }
 }
 
 $(document).ready(function() {
     $('form').submit(function(e) {
+        $('#imagingStudy').val("Please wait while study metadata is retrieved....");
 
         // Make a request for the study metadata
         var studyUrl = getStudyUrl() + '/metadata';
