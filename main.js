@@ -60,13 +60,11 @@ function getSeriesUrl(instance) {
 function createImagingStudy(data) {
     var imagingStudy = {};
     var firstInstance = data[0];
-    imagingStudy.id = getValue(firstInstance, "0020000D");
-    imagingStudy.resource = {
-        "resourceType": "ImagingStudy",
-        "text": {
-            "status": "generated",
-            "div": getValueOrDefault(firstInstance, "00081030", "TODOHumanReadableDescriptionHereTODO")
-        }
+    //imagingStudy.id = getValue(firstInstance, "0020000D");
+    imagingStudy.resourceType = "ImagingStudy";
+    imagingStudy.text = {
+        "status": "generated",
+        "div": getValueOrDefault(firstInstance, "00081030", "TODOHumanReadableDescriptionHereTODO")
     };
     imagingStudy.dateTime = DAToDateTime(getValue(firstInstance, "00080020"));
     imagingStudy.subject = {
