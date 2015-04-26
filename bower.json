@@ -1,0 +1,41 @@
+{
+  "name": "DICOMToFHIRImagingStudy",
+  "version": "0.0.1",
+  "description": "Utility to create a FHIR Imaging Study resource from a set of DICOM files",
+  "main": "dist/DICOMToFHIRImagingStudy.js",
+  "ignore": [
+    "docs",
+    "example",
+    "src",
+    "test",
+    "gruntfile.js",
+    "package.json",
+    "bower.json",
+    ".gitignore"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.3.4"
+  },
+  "devDependencies": {
+    "qunit": "~1.14.0"
+  },
+  "license": "MIT",
+  "authors": [
+    "Chris Hafey"
+  ],
+  "homepage": "https://github.com/chafey/DICOMToFHIRImagingStudy",
+  "keywords": [
+    "DICOM",
+    "medical",
+    "imaging",
+    "DICOMweb",
+    "FHIR",
+    "HL7",
+    "ImagingStudy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chafey/DICOMToFHIRImagingStudy.git"
+  }
+}
