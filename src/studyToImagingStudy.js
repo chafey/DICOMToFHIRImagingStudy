@@ -68,8 +68,10 @@ function studyToImagingStudy(data, options) {
         "value" : getValue(firstInstance, "00080050")
     };
     imagingStudy.url = getStudyUrl();
-    imagingStudy.numberOfSeries = getValueOrDefault(firstInstance, "00201206");
-    imagingStudy.numberOfInstances = getValueOrDefault(firstInstance, "00201208");
+    //imagingStudy.numberOfSeries = getValueOrDefault(firstInstance, "00201206");
+    //imagingStudy.numberOfInstances = getValueOrDefault(firstInstance, "00201208");
+    imagingStudy.numberOfSeries = 0;
+    imagingStudy.numberOfInstances = 0;
     imagingStudy.series = [];
     imagingStudy.clinicalInformation = getValueOrDefault(firstInstance, "00401002");
     imagingStudy.description = getValueOrDefault(firstInstance, "00081030");
@@ -85,9 +87,10 @@ function studyToImagingStudy(data, options) {
                 modality: getValue(instance, '00080060'),
                 uid : "urn:oid:" + seriesUid,
                 description: getValueOrDefault(instance,'0008103E'),
-                numberOfInstances: getValueOrDefault(instance,'00201209'),
-                availability: getValueOrDefault(instance, '00080056'),
-                url: getSeriesUrl(instance),
+                numberOfInstances: 0,
+                //numberOfInstances: getValueOrDefault(instance,'00201209'),
+                //availability: getValueOrDefault(instance, '00080056'),
+                //url: getSeriesUrl(instance),
                 dateTime: DAToDateTime(getValue(firstInstance, "00080021")),
                 instance: []
             };
@@ -98,12 +101,21 @@ function studyToImagingStudy(data, options) {
             number: getValueOrDefault(instance,'00200013'),
             uid : "urn:oid:" + getValue(instance,'00080018'),
             sopclass: getValue(instance, '00080016'),
-            number: getValueOrDefault(instance,'00041430'),
-            title: getTitle(instance),
-            url: getInstanceUrl(instance)
+            //type: getValueOrDefault(instance,'00041430'),
+            //title: getTitle(instance),
+            //url: getInstanceUrl(instance)
         }
         series.instance.push(instance);
     });
+
+    function compare(a,b) {
+        if (a.number < b.number)
+            return -1;
+        if (a.number > b.number)
+            return 1;
+        return 0;
+    }
+
 
     var numInstances = 0;
     imagingStudy.series.forEach(function(series) {
@@ -113,7 +125,9 @@ function studyToImagingStudy(data, options) {
         } else {
             numInstances += series.numberOfInstances;
         }
+        series.instance.sort(compare);
     });
+    imagingStudy.series.sort(compare);
 
     if(!imagingStudy.numberOfInstances) {
         imagingStudy.numberOfInstances = numInstances;
