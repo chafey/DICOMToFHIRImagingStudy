@@ -28,6 +28,12 @@ function getValueOrDefault(instance, tag, defaultValue, index) {
     if(element === undefined) {
         return defaultValue;
     }
+    // NOTE: This should't happen by DCM4CHEE is returning an empty element in some cases
+
+    if(element.Value === undefined) {
+        return defaultValue;
+    }
+
     if(element.Value.length <= index) {
         return defaultValue;
     }
